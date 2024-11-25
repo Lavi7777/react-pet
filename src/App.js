@@ -1,11 +1,12 @@
+import React from 'react';
+import CampaignsList from './components/CampaignsList';
 
-
-function App() {
+const App = () => {
   return (
-    <div className="App">
-
-    </div>
+      <div>
+        <CampaignsList />
+      </div>
   );
-}
+};
 
 export default App;
