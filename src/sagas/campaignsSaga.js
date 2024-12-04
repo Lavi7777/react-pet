@@ -1,20 +1,23 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
-import {
-    fetchCampaignsStart,
-    fetchCampaignsSuccess,
-    fetchCampaignsError,
-} from '../features/campaignsSlice';
+import { call, put, takeLatest } from 'redux-saga/effects';
+import { fetchCampaigns, fetchCampaignsStart, fetchCampaignsSuccess, fetchCampaignsFailure } from '../features/campaignsSlice';
 
 function* fetchCampaignsSaga() {
     try {
-        const response = yield call(fetch, 'https://674437ffb4e2e04abea14d68.mockapi.io/campaigns');
+        // Загрузка данных
+        const response = yield call(fetch, 'http://localhost:5244/AffiliateCampaign/GetList');
         const data = yield response.json();
+
+        // Диспатч успешного получения данных
         yield put(fetchCampaignsSuccess(data));
     } catch (error) {
-        yield put(fetchCampaignsError(error.message));
+        // Диспатч ошибки, если запрос не удался
+        yield put(fetchCampaignsFailure(error.message));
     }
 }
 
-export default function* campaignsSaga() {
-    yield takeEvery(fetchCampaignsStart.type, fetchCampaignsSaga);
+// Следим за экшеном fetchCampaigns, чтобы запускать этот сагу
+function* campaignsSaga() {
+    yield takeLatest(fetchCampaigns, fetchCampaignsSaga);
 }
+
+export default campaignsSaga;

@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCampaignsStart } from '../features/campaignsSlice';
+import { fetchCampaignsStart } from '../../features/campaignsSlice';
+import { useNavigate } from 'react-router-dom';
 
 const CampaignsList = () => {
     const dispatch = useDispatch();
     const { items, loading, error } = useSelector((state) => state.campaigns);
+    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(fetchCampaignsStart());
@@ -21,11 +23,12 @@ const CampaignsList = () => {
 
     const handleEditClick = (campaignId) => {
         console.log(`Edit campaign with ID: ${campaignId}`);
+        navigate(`/edit/${campaignId}`);
     };
 
     return (
         <div>
-            <table border="1" style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <table border="1" style={{ width: '100%', borderCollapse: 'collapse',textAlign: 'center' }}>
                 <thead>
                 <tr>
                     <th></th>
